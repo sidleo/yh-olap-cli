@@ -77,6 +77,19 @@ install_skill() {
     curl -sL "https://raw.githubusercontent.com/${REPO}/main/skill/SKILL.md" -o "${SKILL_DIR}/SKILL.md" 2>/dev/null || true
 }
 
+# 检测已存在的 agent skills 目录
+detect_agent_skills() {
+    for dir in \
+        "$HOME/.claude/skills" \
+        "$HOME/.codex/skills" \
+        "$HOME/.micode/skills" \
+        "$HOME/.opencode/skills"; do
+        if [ -d "$dir" ]; then
+            echo "$dir"
+        fi
+    done
+}
+
 echo "=========================================="
 echo "  yh-olap-cli 安装脚本"
 echo "=========================================="
@@ -96,8 +109,23 @@ info "Skill:  ${SKILL_DIR}/SKILL.md"
 echo
 info "验证: yh-olap-cli version"
 echo
-echo "=========================================="
-echo "  [Agent] Skill 已安装，请将其复制到您的 skills 目录"
-echo "=========================================="
-echo
-echo "Skill 文件位置: ${SKILL_DIR}/SKILL.md"
+
+# 检测并输出 agent skills 复制命令
+agent_dirs=$(detect_agent_skills)
+if [ -n "$agent_dirs" ]; then
+    echo "=========================================="
+    echo "  [Agent] 检测到以下 skills 目录，请复制 Skill"
+    echo "=========================================="
+    for dir in $agent_dirs; do
+        echo
+        echo "  ${dir}/yh-olap-cli/SKILL.md"
+        echo "  cp ${SKILL_DIR}/SKILL.md ${dir}/yh-olap-cli/"
+    done
+else
+    echo "=========================================="
+    echo "  [Agent] 未检测到已知 skills 目录"
+    echo "=========================================="
+    echo
+    echo "Skill 文件位置: ${SKILL_DIR}/SKILL.md"
+    echo "请手动复制到您的 Agent skills 目录"
+fi
