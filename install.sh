@@ -122,10 +122,10 @@ if [ -n "$agent_dirs" ]; then
         echo "  cp ${SKILL_DIR}/SKILL.md ${dir}/yh-olap-cli/"
     done
 else
-    echo "=========================================="
-    echo "  [Agent] 未检测到已知 skills 目录"
-    echo "=========================================="
-    echo
-    echo "Skill 文件位置: ${SKILL_DIR}/SKILL.md"
+echo "=========================================="
+echo "  [Agent] Skill 已安装，请将其复制到您的 skills 目录"
+echo "=========================================="
+echo
+echo "Skill 目录: ${SKILL_DIR}"
     echo "请手动复制到您的 Agent skills 目录"
 fi
