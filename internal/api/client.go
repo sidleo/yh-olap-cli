@@ -194,9 +194,9 @@ type GetSqlResultResponse struct {
 
 // GetLogResultResponse 获取日志结果响应
 type GetLogResultResponse struct {
-	Finish string `json:"finish"`
-	Error  bool   `json:"error"`
-	Data   string `json:"data"`
+	Finish string      `json:"finish"`
+	Error  interface{} `json:"error"`
+	Data   string      `json:"data"`
 }
 
 // DownloadSimpleResponse 快速下载响应（Excel 文件）

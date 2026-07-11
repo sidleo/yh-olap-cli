@@ -124,7 +124,7 @@ func (c *Client) WaitForFinish(requestID string, interval, timeout time.Duration
 		}
 		logResult = lr
 
-		if lr.Error {
+		if isError(lr.Error) {
 			return nil, nil, fmt.Errorf("执行错误: %s", lr.Data)
 		}
 
@@ -153,4 +153,20 @@ func (c *Client) WaitForFinish(requestID string, interval, timeout time.Duration
 	}
 
 	return logResult, sqlResult, nil
+}
+
+// isError 检查 error 字段是否表示错误（支持 bool 和 number 类型）
+func isError(v interface{}) bool {
+	switch val := v.(type) {
+	case bool:
+		return val
+	case float64:
+		return val != 0
+	case int:
+		return val != 0
+	case nil:
+		return false
+	default:
+		return false
+	}
 }

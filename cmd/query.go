@@ -57,8 +57,8 @@ var queryRunCmd = &cobra.Command{
 		}
 
 		data := map[string]interface{}{
-			"columnNameList": result.ColumnNameList,
-			"list":           result.List,
+			"columnNameList": toInterfaceSlice(result.ColumnNameList),
+			"list":           toInterfaceSlice(result.List),
 			"total":          result.Total,
 		}
 
@@ -124,8 +124,8 @@ var queryFileCmd = &cobra.Command{
 		}
 
 		resultData := map[string]interface{}{
-			"columnNameList": result.ColumnNameList,
-			"list":           result.List,
+			"columnNameList": toInterfaceSlice(result.ColumnNameList),
+			"list":           toInterfaceSlice(result.List),
 			"total":          result.Total,
 		}
 
@@ -155,4 +155,24 @@ func init() {
 
 	queryCmd.AddCommand(queryRunCmd)
 	queryCmd.AddCommand(queryFileCmd)
+}
+
+// toInterfaceSlice 将具体类型的 slice 转换为 []interface{}
+func toInterfaceSlice(v interface{}) []interface{} {
+	switch val := v.(type) {
+	case []string:
+		result := make([]interface{}, len(val))
+		for i, s := range val {
+			result[i] = s
+		}
+		return result
+	case []map[string]interface{}:
+		result := make([]interface{}, len(val))
+		for i, m := range val {
+			result[i] = m
+		}
+		return result
+	default:
+		return nil
+	}
 }
