@@ -60,8 +60,9 @@ get_binary() {
     fi
 
     cd "$build_dir"
-    if go build -o "$BINARY_NAME" . 2>&1; then
-        echo "$build_dir/$BINARY_NAME"
+    # 使用不同的输出名称避免与仓库中的二进制冲突
+    if go build -o "yh-olap-cli-new" . 2>&1; then
+        echo "$build_dir/yh-olap-cli-new"
         return 0
     else
         error "构建失败"
