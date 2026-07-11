@@ -1,5 +1,5 @@
 ---
-name: yh-olap
+name: yh-olap-cli
 version: 2.0.0
 description: "使用 yh-olap-cli 命令行工具进行 OLAP 数据查询、SQL 执行、结果下载和引擎管理。适用于数据查询、分析报表生成、数据导出、用户登录认证等场景。采用按需登录策略：直接执行命令，仅在认证失败时提示登录。"
 metadata:
