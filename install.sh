@@ -3,7 +3,7 @@ set -e
 
 REPO="sidleo/yh-olap-cli"
 BINARY_NAME="yh-olap-cli"
-SKILL_DIR="$HOME/.agents/skills/yh-olap"
+SKILL_DIR="$HOME/.agents/skills/yh-olap-cli"
 INSTALL_DIR="$HOME/.local/bin"
 
 info() { echo -e "\033[0;32m[INFO]\033[0m $1" >&2; }
