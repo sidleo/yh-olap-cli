@@ -3,14 +3,13 @@ set -e
 
 REPO="sidleo/yh-olap-cli"
 BINARY_NAME="yh-olap-cli"
-SKILL_DIR="$HOME/.agents/skills/yh-olap-cli"
 INSTALL_DIR="$HOME/.local/bin"
+SKILL_DIR="$HOME/.agents/skills/yh-olap-cli"
 
 info() { echo -e "\033[0;32m[INFO]\033[0m $1" >&2; }
 warn() { echo -e "\033[1;33m[WARN]\033[0m $1" >&2; }
 error() { echo -e "\033[0;31m[ERROR]\033[0m $1" >&2; exit 1; }
 
-# 检测平台
 detect_platform() {
     local os arch
     case "$(uname -s)" in
@@ -26,11 +25,9 @@ detect_platform() {
     echo "${os}_${arch}"
 }
 
-# 获取二进制文件（仅输出路径到 stdout）
 get_binary() {
     local platform=$1
 
-    # 尝试从 GitHub Releases 下载
     info "尝试从 GitHub Releases 下载..."
     local version
     version=$(curl -sL --max-time 10 "https://api.github.com/repos/${REPO}/releases/latest" 2>/dev/null | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
@@ -46,7 +43,6 @@ get_binary() {
         fi
     fi
 
-    # 下载失败，从源码构建
     warn "GitHub Releases 不可用，从源码构建..."
     if ! command -v go &> /dev/null; then
         error "未安装 Go，请先安装: brew install go"
@@ -60,7 +56,6 @@ get_binary() {
     fi
 
     cd "$build_dir"
-    # 使用不同的输出名称避免与仓库中的二进制冲突
     if go build -o "yh-olap-cli-new" . 2>&1; then
         echo "$build_dir/yh-olap-cli-new"
         return 0
@@ -69,24 +64,19 @@ get_binary() {
     fi
 }
 
-# 安装
 install_binary() {
     local binary=$1
 
     mkdir -p "$INSTALL_DIR"
     mv "$binary" "${INSTALL_DIR}/${BINARY_NAME}"
     chmod +x "${INSTALL_DIR}/${BINARY_NAME}"
-    info "已安装到 ${INSTALL_DIR}/${BINARY_NAME}"
 }
 
-# 安装 Skill
 install_skill() {
     mkdir -p "$SKILL_DIR"
     curl -sL "https://raw.githubusercontent.com/${REPO}/main/skill/SKILL.md" -o "${SKILL_DIR}/SKILL.md" 2>/dev/null || true
-    info "Skill 已安装到 ${SKILL_DIR}"
 }
 
-# 主流程
 echo "=========================================="
 echo "  yh-olap-cli 安装脚本"
 echo "=========================================="
@@ -99,11 +89,28 @@ install_binary "$binary"
 install_skill
 
 echo
-info "验证安装..."
-"${INSTALL_DIR}/${BINARY_NAME}" version 2>/dev/null || true
-
+info "安装完成！"
 echo
-info "使用方法:"
-echo "  1. 登录: yh-olap-cli login login -u <用户名> -p <密码>"
-echo "  2. 查询: yh-olap-cli query run \"SELECT * FROM table LIMIT 10\""
-echo "  3. 下载: yh-olap-cli download query \"SELECT * FROM table\" -o result.xlsx"
+info "二进制: ${INSTALL_DIR}/${BINARY_NAME}"
+info "Skill:  ${SKILL_DIR}/SKILL.md"
+echo
+info "验证: yh-olap-cli version"
+echo
+echo "=========================================="
+echo "  Skill 安装说明"
+echo "=========================================="
+echo
+echo "Skill 文件已安装到: ${SKILL_DIR}/SKILL.md"
+echo
+echo "如果您的 Agent 有自己的 skills 目录，请将以下内容复制到对应位置："
+echo
+echo "  目标路径: <agent_skills_dir>/yh-olap-cli/SKILL.md"
+echo
+echo "示例："
+echo "  # Claude Code"
+echo "  mkdir -p ~/.claude/skills/yh-olap-cli"
+echo "  cp ${SKILL_DIR}/SKILL.md ~/.claude/skills/yh-olap-cli/"
+echo
+echo "  # 其他 Agent"
+echo "  mkdir -p <agent_skills_dir>/yh-olap-cli"
+echo "  cp ${SKILL_DIR}/SKILL.md <agent_skills_dir>/yh-olap-cli/"
