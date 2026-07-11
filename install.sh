@@ -97,20 +97,7 @@ echo
 info "验证: yh-olap-cli version"
 echo
 echo "=========================================="
-echo "  Skill 安装说明"
+echo "  [Agent] 请执行以下命令安装 Skill"
 echo "=========================================="
 echo
-echo "Skill 文件已安装到: ${SKILL_DIR}/SKILL.md"
-echo
-echo "如果您的 Agent 有自己的 skills 目录，请将以下内容复制到对应位置："
-echo
-echo "  目标路径: <agent_skills_dir>/yh-olap-cli/SKILL.md"
-echo
-echo "示例："
-echo "  # Claude Code"
-echo "  mkdir -p ~/.claude/skills/yh-olap-cli"
-echo "  cp ${SKILL_DIR}/SKILL.md ~/.claude/skills/yh-olap-cli/"
-echo
-echo "  # 其他 Agent"
-echo "  mkdir -p <agent_skills_dir>/yh-olap-cli"
-echo "  cp ${SKILL_DIR}/SKILL.md <agent_skills_dir>/yh-olap-cli/"
+echo "mkdir -p ~/.claude/skills/yh-olap-cli && cp ${SKILL_DIR}/SKILL.md ~/.claude/skills/yh-olap-cli/"
