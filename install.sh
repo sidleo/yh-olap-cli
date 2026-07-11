@@ -97,7 +97,7 @@ echo
 info "验证: yh-olap-cli version"
 echo
 echo "=========================================="
-echo "  [Agent] 请执行以下命令安装 Skill"
+echo "  [Agent] Skill 已安装，请将其复制到您的 skills 目录"
 echo "=========================================="
 echo
-echo "mkdir -p ~/.claude/skills/yh-olap-cli && cp ${SKILL_DIR}/SKILL.md ~/.claude/skills/yh-olap-cli/"
+echo "Skill 文件位置: ${SKILL_DIR}/SKILL.md"
